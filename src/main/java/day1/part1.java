@@ -4,7 +4,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
-public class day1 {
+public class part1 {
     public static void main(String[] args) {
         String puzzleInput = "./src/main/java/day1/puzzle_input";
         int totalSum = 0;
