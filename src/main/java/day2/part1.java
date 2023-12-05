@@ -3,50 +3,57 @@ package day2;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 public class part1 {
     public static void main(String[] args) {
         String puzzleInput = "./src/main/java/day2/puzzle_input";
-        int possibleGamesTotal = 0;
-
+        int sumOfGameIDs = 0;
 
         try {
             BufferedReader reader = new BufferedReader(new FileReader(puzzleInput));
             String line;
             while ((line = reader.readLine()) != null) {
-                System.out.println(line);
-                System.out.println(possibleGamesTotal);
-                checkPossibility(line);
+                int gameId = Integer.parseInt(line.substring(5, line.indexOf(':')));
+                if (checkPossibility(line)) {
+                    sumOfGameIDs += gameId;
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
+        System.out.println("Sum of IDs for possible games: " + sumOfGameIDs);
     }
 
-    public static void checkPossibility(String input) {
-        Map<String, Integer> gemCount = new HashMap<>();
+    public static boolean checkPossibility(String input) {
+        int maxRed = 12;
+        int maxGreen = 13;
+        int maxBlue = 14;
 
         String gameData = input.substring(input.indexOf(':') + 1).trim();
         String[] parts = gameData.split(";");
 
-
         for (String part : parts) {
             String[] gems = part.split(",");
             for (String gem : gems) {
+                gem = gem.trim();
                 String[] gemDetails = gem.split(" ");
                 if (gemDetails.length == 2) {
                     int count = Integer.parseInt(gemDetails[0]);
-                    String color = gemDetails[1];
+                    String color = gemDetails[1].toLowerCase();
 
-                    gemCount.put(color, gemCount.getOrDefault(color, 0) + count);
+                    if ((color.equals("red") && count > maxRed) ||
+                            (color.equals("green") && count > maxGreen) ||
+                            (color.equals("blue") && count > maxBlue)) {
+                        return false;
+                    }
                 }
             }
         }
-        for (String color : gemCount.keySet()) {
-            System.out.println(color + ": " + gemCount.get(color));
-        }
+        return true;
     }
 }
+
+
+
+
 
