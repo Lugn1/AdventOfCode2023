@@ -9,7 +9,7 @@ import java.util.List;
 public class day3 {
 
     public static void main(String[] args) {
-        String fileName = "./src/main/java/day3/puzzle_input";
+        String fileName = "./src/main/java/day3/sample_input";
         List<String> schematic = new ArrayList<>();
         try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
             String line;
@@ -22,6 +22,7 @@ public class day3 {
 
         System.out.println("Sum of part numbers: " + sumPartNumbers(schematic));
     }
+
     public static int sumPartNumbers(List<String> schematic) {
         int sum = 0;
         for (int i = 0; i < schematic.size(); i++) {
@@ -30,7 +31,7 @@ public class day3 {
                 if (Character.isDigit(line.charAt(j)) && isAdjacentToSymbol(schematic, i, j)) {
                     int[] numberInfo = extractNumber(schematic, i, j);
                     sum += numberInfo[0];
-                    j += numberInfo[1] - 1;
+                    j = j + numberInfo[1] - 1; // Set j to the last digit of the current number
                 }
             }
         }
@@ -41,6 +42,9 @@ public class day3 {
         for (int row = i - 1; row <= i + 1; row++) {
             for (int col = j - 1; col <= j + 1; col++) {
                 if (row >= 0 && row < schematic.size() && col >= 0 && col < schematic.get(row).length()) {
+                    if (row == i && col == j) {
+                        continue; // skip the number itself
+                    }
                     char c = schematic.get(row).charAt(col);
                     if (c != '.' && !Character.isDigit(c)) {
                         return true;
